@@ -37,7 +37,7 @@ EAST = -50
 SOUTH = 10
 NORTH = 75
 
-STEP_LON = 1.0 # HOW MUCH TO MOVE AFTER CREATING A TILE (LOWER VALUE TAKES MORE SPACE)
+STEP_LON = 1.0 # HOW MUCH TO MOVE AFTER CREATING A TILE (LOWER VALUE = BIGGER FILE SIZE)
 STEP_LAT = 1.0
 
 SCALE = 0.015 # GOING HIGHER CAN TAKE UP A LOT OF SPACE. (10TB - 50TB)
@@ -57,7 +57,7 @@ OCEAN_SAMPLE_GRID = 7
 LOG_FILE = Path(r"PATH/TO/progress.csv") # MAKE SURE TO CREATE THIS!!
 OCEAN_CACHE_FILE = Path(r"PATH/TO/ocean_cache.csv") # MAKE SURE TO CREATE THIS!!
 
-# ================= EXPERIMENTAL =================
+# ================= EXPERIMENTAL OR NOT WORKING  =================
 AUTO_MERGE_MCA = False # MERGE ALL CHUNKS (CAN CAUSE CRASHES, ERRORS, OR BREAKS!!)
 DELETE_TEMP_AFTER_MERGE = False # AUTO DELETE CACHE FILES FROM %APPDATA% (CAN CAUSE CRASHES, ERRORS, OR BREAKS!!)
 
@@ -347,7 +347,7 @@ def process_tile(tile, index, total):
     if done_folder.exists():
         shutil.rmtree(done_folder)
 # !! EXPERIMENTAL FEATURE START !!
-    if DELETE_TEMP_AFTER_MERGE:
+    if DELETE_TEMP_AFTER_MERGE: # DOES NOTHING IF DISABLED
         done_folder.mkdir(parents=True, exist_ok=True)
         marker = done_folder / "done.txt" # MARKER SO SCRIPT KNOWS THE TITLE HAS BEEN MADE
         marker.write_text("Tile Generated.\n", encoding="utf-8")
