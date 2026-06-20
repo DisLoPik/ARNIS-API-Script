@@ -1,14 +1,5 @@
 # ALL CODE IN THIS FILE IS ORIGINAL AND CREATED BY DISLOPIK. ANY SIMILARITY TO OTHER CODE IS PURELY COINCIDENTAL.
 # GNU AGPLv3
-# ________  ___  ________  ___       ________  ________  ___  ___  __       
-#|\   ___ \|\  \|\   ____\|\  \     |\   __  \|\   __  \|\  \|\  \|\  \     
-#\ \  \_|\ \ \  \ \  \___|\ \  \    \ \  \|\  \ \  \|\  \ \  \ \  \/  /|_   
-# \ \  \ \\ \ \  \ \_____  \ \  \    \ \  \\\  \ \   ____\ \  \ \   ___  \  
-#  \ \  \_\\ \ \  \|____|\  \ \  \____\ \  \\\  \ \  \___|\ \  \ \  \\ \  \ 
-#   \ \_______\ \__\____\_\  \ \_______\ \_______\ \__\    \ \__\ \__\\ \__\
-#    \|_______|\|__|\_________\|_______|\|_______|\|__|     \|__|\|__| \|__|
-#                  |_________|
-#
 # WARNING: I do NOT own any Arnis code, this is simply to automate big selections.
 
 import subprocess
@@ -28,10 +19,10 @@ try:
 except ImportError:
     LAND_MASK_AVAILABLE = False
 
-# ================= SETTINGS =================
+# SETTINGS
 
 ARNIS_EXE = r"PATH/TO/ARNIS/EXE"
-# ================= CORDS =================
+# CORDS
 WEST = -170
 EAST = -50
 SOUTH = 10
@@ -49,7 +40,7 @@ WORK_FOLDER = Path(r"PATH/TO/WORK/FOLDER")
 DONE_FOLDER = Path(r"PATH/TO/DONE/FOLDER")
 MASTER_WORLD = Path(r"PATH/TO/FINAL/FOLDER")
 
-# ================= OCEAN =================
+# OCEAN
 SKIP_OCEAN_TILES = True # SKIPPING OCEAN TILES IS HIGHLY RECOMENED. WHY MAKE OCEAN TILES IF YOU DONT NEED TO?
 OCEAN_THRESHOLD = 0.60
 OCEAN_SAMPLE_GRID = 7 
@@ -57,17 +48,17 @@ OCEAN_SAMPLE_GRID = 7
 LOG_FILE = Path(r"PATH/TO/progress.csv") # MAKE SURE TO CREATE THIS!!
 OCEAN_CACHE_FILE = Path(r"PATH/TO/ocean_cache.csv") # MAKE SURE TO CREATE THIS!!
 
-# ================= EXPERIMENTAL OR NOT WORKING  =================
+# EXPERIMENTAL OR NOT WORKING 
 AUTO_MERGE_MCA = False # MERGE ALL CHUNKS (CAN CAUSE CRASHES, ERRORS, OR BREAKS!!)
 DELETE_TEMP_AFTER_MERGE = False # AUTO DELETE CACHE FILES FROM %APPDATA% (CAN CAUSE CRASHES, ERRORS, OR BREAKS!!)
 
-# ================= LOCKS =================
+# LOCKS
 
 print_lock = Lock()
 merge_lock = Lock()
 log_lock = Lock()
 
-# ================= HELPERS =================
+# HELPERS
 
 def meters_per_degree_lon(lat):
     return 111320 * math.cos(math.radians(lat))
@@ -140,7 +131,7 @@ def get_tiles():
 
     return tiles
 
-# ================= OCEAN CHECK =================
+# OCEAN CHECK
 
 def load_ocean_cache():
     cache = {}
@@ -229,7 +220,7 @@ def apply_ocean_skipping(tiles):
 
     return kept, skipped_count
 
-# ================= ESTIMATE MATH =================
+# ESTIMATE MATH
 
 def estimate(total_tiles, runnable_tiles):
     total_time = (runnable_tiles * AVG_TILE_TIME_SEC) / max(PARALLEL_WORKERS, 1)
@@ -259,7 +250,7 @@ def is_done(tile_name):
     return (DONE_FOLDER / tile_name).exists()
 
 # !! EXPERIMENTAL FEATURE START !!
-# ================= MCA MERGE =================
+# MCA MERGE
 
 def copy_level_files_once(tile_world):
     MASTER_WORLD.mkdir(parents=True, exist_ok=True)
@@ -299,8 +290,7 @@ def merge_mca_regions(tile_world, offset_rx, offset_rz):
 
             shutil.copy2(file, dst)
 # !! EXPERIMENTAL FEATURE END !!
-
-# ================= TILE WORK =================
+# TILE WORK
 
 def process_tile(tile, index, total):
     tile_name = tile["name"]
@@ -358,9 +348,7 @@ def process_tile(tile, index, total):
     log_status(tile_name, "done")
     return tile_name, "done"
 # !! EXPERIMENTAL FEATURE END !!
-
-# ================= MAIN =================
-
+# MAIN
 def main():
     WORK_FOLDER.mkdir(parents=True, exist_ok=True)
     DONE_FOLDER.mkdir(parents=True, exist_ok=True)
@@ -371,7 +359,7 @@ def main():
 
     total_time, estimated_gb = estimate(len(all_tiles), len(runnable_tiles))
 
-    print("\n========== ESTIMATE ==========")
+    print("\n ESTIMATE")
     print(f"Total tiles before ocean skip: {len(all_tiles)}")
     print(f"Ocean-skipped tiles: {ocean_skipped}")
     print(f"Tiles to generate: {len(runnable_tiles)}")
@@ -421,7 +409,7 @@ def main():
                     f"({percent:.1f}%) | Done: {completed} | Skipped: {skipped} | Failed: {failed}"
                 )
 
-    print("\n========== FINISHED ==========")
+    print("\n FINISHED")
     print(f"Done: {completed}")
     print(f"Already skipped/done: {skipped}")
     print(f"Ocean-skipped before start: {ocean_skipped}")
